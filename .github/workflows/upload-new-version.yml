@@ -18,17 +18,6 @@ jobs:
         with:
           ruby-version: 3.2 # Update to the correct Ruby version required
       - name: Load secrets
-        id: load_secrets
-        uses: ltvco/github-actions/aws-secret-loader@aws-secret-loader-v1
-        with:
-          map: |
-            github-access-token,
-            npm-token,
-            gemstash-token
-          aws_access_key_id: ${{ secrets.GHA_AWS_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.GHA_AWS_SECRET_KEY }}
-          aws_secret_name: github-action-build-args
-      - name: Load common secrets
         uses: ltvco/github-actions/env-var-loader@env-var-loader-v1
         with:
           map: |
@@ -41,8 +30,6 @@ jobs:
       - name: Install bundler
         run: gem install bundler
       - name: Build and deploy gem
-        env:
-          GEMSTASH_KEY: ${{ steps.load_secrets.outputs.gemstash-token }}
         run: |
           echo "Setting up Gem Credentials"
           mkdir -p ~/.gem
